@@ -3,6 +3,8 @@
 #include "random.h"
 #include <math.h>
 
+#include "Benchmark.hpp"
+
 Ant::Ant(const AntColony& colony)
     :m_Contex(colony), m_Visited(colony.m_Size, false)
 {
@@ -15,9 +17,12 @@ Ant::~Ant()
 }
 
 std::pair<std::vector<int>, float> Ant::Run()
-{
-    std::fill(m_Visited.begin(), m_Visited.end(), false);
-    m_CurrentTndex = lehmer32()%m_Contex.m_Size; // chose random start index
+{   
+    {
+        MEASURE_NAME("Run Init")
+        std::fill(m_Visited.begin(), m_Visited.end(), false);
+        m_CurrentTndex = lehmer32()%m_Contex.m_Size; // chose random start index
+    }
 
     float totalCost = 0.0f;
     std::vector<int> path;
