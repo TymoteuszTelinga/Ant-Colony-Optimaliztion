@@ -5,6 +5,8 @@
 #include <iostream>
 #include <numeric>
 
+#include "Benchmark.hpp"
+
 Ant::Ant(const AntColony& colony)
     :m_Contex(colony), m_NotVisited(colony.m_Size, 0), m_NotVisitedSize(colony.m_Size)
 {
@@ -18,8 +20,11 @@ Ant::~Ant()
 
 std::pair<std::vector<int>, float> Ant::Run()
 {
-    std::iota(m_NotVisited.begin(), m_NotVisited.end(), 0);
-    m_NotVisitedSize = m_NotVisited.size();
+    {
+        //MEASURE_NAME("Run Init")
+        std::iota(m_NotVisited.begin(), m_NotVisited.end(), 0);
+        m_NotVisitedSize = m_NotVisited.size();
+    }
 
     int index = lehmer32()%m_Contex.m_Size; // chose random start index
     m_CurrentIndex = m_NotVisited[index];
@@ -59,9 +64,9 @@ int Ant::ChoseRandomNeighbor() const
     for (int i = 0; i < m_NotVisitedSize; i++)
     {
         int vert = m_NotVisited[i];
-        item n = {i, CalculateWeight(vert)};
-        neighbors.emplace_back(n);
-        sumWieght += n.weight;
+        float weight = CalculateWeight(vert);
+        neighbors[i] = {i, weight};
+        sumWieght += weight;
     }
 
     float randomWeight = fRand(0,sumWieght);
