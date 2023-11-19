@@ -10,7 +10,7 @@ int main()
 {
     std::cout<<"Hello\n";
 
-    Graph tsp(R"(Data\uy734.tsp)");
+    Graph tsp(R"(Data\att48.tsp)");
 
     NearestNeighbor nn(tsp);
     {
@@ -29,15 +29,16 @@ int main()
     //--------------------------------
     Slehmer32(time(NULL));
     AntColonySpec spec;
-    spec.NumOfIteration = 1000;
-    spec.GroupSize = 20;
-    spec.pheromoneIntesity = 100000;
+    spec.NumOfIteration = 100;
+    spec.GroupSize = 200;
+    spec.pheromoneIntesity = 10000;
     AntColony aco(tsp, spec);
 
     float MaxValue = 0.f;
     float MinValue = std::numeric_limits<float>::infinity();
     float AvgValue = 0.f;
-    for (size_t i = 0; i < 2; i++)
+    int tests = 10;
+    for (size_t i = 0; i < tests; i++)
     {    
         {
             MEASURE_NAME("ACO")
@@ -45,17 +46,19 @@ int main()
         }
 
         std::cout<<"ACO: ";
+
         // for (auto &&i : aco.GetPath())
         // {
-        //     std::cout<< i+1 << ' ';
+        //     std::cout<< i << ' ';
         // }
+
         std::cout<<" "<<aco.GetPathCost()<<std::endl;
 
         AvgValue += aco.GetPathCost();
         MaxValue = std::max(MaxValue, aco.GetPathCost());
         MinValue = std::min(MinValue, aco.GetPathCost());
     }
-    AvgValue /= 2.f;
+    AvgValue /= (float)tests;
 
     std::cout<<"Max: "<<MaxValue<<" Min: "<<MinValue<<" Avg: "<<AvgValue<<std::endl;
 

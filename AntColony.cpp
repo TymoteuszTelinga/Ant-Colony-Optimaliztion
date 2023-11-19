@@ -27,11 +27,11 @@ void AntColony::Run()
         float localBestCost = std::numeric_limits<float>::infinity();
         for (size_t j = 0; j < m_Spec.GroupSize; j++)
         {
-            auto [path, cost] = ant.Run();
-            if (cost < localBestCost)
+            auto resoult = ant.Run();
+            if (resoult.second < localBestCost)
             {
-                localBestPath = path;
-                localBestCost = cost;
+                localBestPath = resoult.first;
+                localBestCost = resoult.second;
             }
         }
         UpdatePheromones(localBestPath, localBestCost);

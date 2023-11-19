@@ -14,10 +14,15 @@ private:
     float CalculateWeight(int nextIndex) const;
     int ChoseRandomNeighbor() const;
 
+    void PopIndex(int index);
+    
+
 private:
     const AntColony& m_Contex;
-    std::vector<bool> m_Visited;
-    int m_CurrentTndex;
+    std::vector<int> m_NotVisited;
+    int m_NotVisitedSize;
+
+    int m_CurrentIndex;
 
     const float m_DistancePower = 4;
     const float m_PheromonePower = 1;
