@@ -36,7 +36,8 @@ int main(int argc, char *argv[])
     std::cout<<" "<<nn.GetPathCost()<<std::endl;
 
     //--------------------------------
-    Slehmer32(time(NULL));
+    //Slehmer32(time(NULL));
+    Random::SRand(time(NULL));
     AntColonySpec spec;
     if(!spec.LoadFromFile("spec.ini"))
     {
@@ -48,7 +49,7 @@ int main(int argc, char *argv[])
     float MaxValue = 0.f;
     float MinValue = std::numeric_limits<float>::infinity();
     float AvgValue = 0.f;
-    for (size_t i = 0; i < 1; i++)
+    for (size_t i = 0; i < spec.NumOfTest; i++)
     {    
         {
             MEASURE_NAME("ACO")
@@ -66,9 +67,9 @@ int main(int argc, char *argv[])
         MaxValue = std::max(MaxValue, aco.GetPathCost());
         MinValue = std::min(MinValue, aco.GetPathCost());
     }
-    AvgValue /= 10.f;
+    AvgValue /= (float)spec.NumOfTest;
 
-    // std::cout<<"Max: "<<MaxValue<<" Min: "<<MinValue<<" Avg: "<<AvgValue<<std::endl;
+    std::cout<<"Max: "<<MaxValue<<" Min: "<<MinValue<<" Avg: "<<AvgValue<<std::endl;
 
     std::cout<<"end\n";
 }

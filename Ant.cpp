@@ -21,7 +21,7 @@ std::pair<std::vector<int>, float> Ant::Run()
     {
         MEASURE_NAME("Run Init")
         std::fill(m_Visited.begin(), m_Visited.end(), false);
-        m_CurrentTndex = lehmer32()%m_Contex.m_Size; // chose random start index
+        m_CurrentTndex = Random::Rand()%m_Contex.m_Size; // chose random start index
     }
 
     float totalCost = 0.0f;
@@ -65,7 +65,7 @@ int Ant::ChoseRandomNeighbor() const
         }
     }
 
-    float randomWeight = fRand(0,sumWieght);
+    float randomWeight = Random::FRand(0,sumWieght);
 
     for (size_t i = 0; i < neighbors.size(); i++)
     {

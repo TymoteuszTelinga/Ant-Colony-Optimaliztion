@@ -28,11 +28,11 @@ void AntColony::Run()
         float localBestCost = std::numeric_limits<float>::infinity();
         for (size_t j = 0; j < m_Spec.GroupSize; j++)
         {
-            auto [path, cost] = ant.Run();
-            if (cost < localBestCost)
+            auto result = ant.Run();
+            if (result.second < localBestCost)
             {
-                localBestPath = path;
-                localBestCost = cost;
+                localBestPath = result.first;
+                localBestCost = result.second;
             }
         }
         UpdatePheromones(localBestPath, localBestCost);
@@ -136,6 +136,13 @@ bool AntColonySpec::LoadFromFile(const std::string& filePath)
             GroupSize = value;
             continue;
         }
+
+        if (STR_NAME(NumOfTest) == name)
+        {
+            NumOfTest = value;
+            continue;
+        }
+        
     }
 
     return true;
@@ -155,4 +162,5 @@ void AntColonySpec::SaveToFile(const std::string& filePath)
     file<<SaveVariable(pheromoneIntesity);
     file<<SaveVariable(NumOfIteration);
     file<<SaveVariable(GroupSize);
+    file<<SaveVariable(NumOfTest);
 }
