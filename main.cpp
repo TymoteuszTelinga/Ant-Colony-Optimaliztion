@@ -6,12 +6,21 @@
 #include "AntColony.h"
 #include "random.h"
 
-int main()
+int main(int argc, char *argv[])
 {
-    std::cout<<"Hello\n";
+    if (argc <= 1)
+    {
+        std::cerr<<"specify file\n";
+        return -1;
+    }
 
-    Graph tsp(R"(Data\att48.tsp)");
-
+    std::string fileName(argv[1]);
+    Graph tsp(fileName);
+    if (!tsp.IsGood())
+    {
+        return -1;
+    }
+    
     NearestNeighbor nn(tsp);
     {
         MEASURE_NAME("NN")
@@ -29,15 +38,17 @@ int main()
     //--------------------------------
     Slehmer32(time(NULL));
     AntColonySpec spec;
-    spec.NumOfIteration = 100;
-    spec.GroupSize = 200;
-    spec.pheromoneIntesity = 100000;
+    if(!spec.LoadFromFile("spec.ini"))
+    {
+        spec.SaveToFile("spec.ini");
+    }
+
     AntColony aco(tsp, spec);
 
     float MaxValue = 0.f;
     float MinValue = std::numeric_limits<float>::infinity();
     float AvgValue = 0.f;
-    for (size_t i = 0; i < 10; i++)
+    for (size_t i = 0; i < 1; i++)
     {    
         {
             MEASURE_NAME("ACO")
@@ -57,7 +68,7 @@ int main()
     }
     AvgValue /= 10.f;
 
-    std::cout<<"Max: "<<MaxValue<<" Min: "<<MinValue<<" Avg: "<<AvgValue<<std::endl;
+    // std::cout<<"Max: "<<MaxValue<<" Min: "<<MinValue<<" Avg: "<<AvgValue<<std::endl;
 
     std::cout<<"end\n";
 }

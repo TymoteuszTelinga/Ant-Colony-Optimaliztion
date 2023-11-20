@@ -9,6 +9,9 @@ struct AntColonySpec
     float pheromoneIntesity = 1.f;
     uint32_t NumOfIteration = 100;
     uint32_t GroupSize = 200;
+
+    bool LoadFromFile(const std::string& filePath);
+    void SaveToFile(const std::string& filePath);
 };
 
 class AntColony
