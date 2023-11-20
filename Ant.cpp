@@ -10,7 +10,7 @@
 Ant::Ant(const AntColony& colony)
     :m_Contex(colony), m_NotVisited(colony.m_Size, 0), m_NotVisitedSize(colony.m_Size)
 {
-
+    std::iota(m_NotVisited.begin(), m_NotVisited.end(), 0);
 }
 
 Ant::~Ant()
@@ -18,11 +18,12 @@ Ant::~Ant()
     
 }
 
-std::pair<std::vector<int>, float> Ant::Run()
+void Ant::Run()
 {
     {
         //MEASURE_NAME("Run Init")
-        std::iota(m_NotVisited.begin(), m_NotVisited.end(), 0);
+        // std::cout<<"New Path\n";
+        // std::iota(m_NotVisited.begin(), m_NotVisited.end(), 0);
         m_NotVisitedSize = m_NotVisited.size();
     }
 
@@ -30,23 +31,23 @@ std::pair<std::vector<int>, float> Ant::Run()
     m_CurrentIndex = m_NotVisited[index];
     PopIndex(index);
 
-    float totalCost = 0.0f;
-    std::vector<int> path;
-    path.push_back(m_CurrentIndex);
+    m_TotalCost = 0.0f;
+    // std::vector<int> path;
+    // path.push_back(m_CurrentIndex);
 
-    while (path.size() < m_Contex.m_Size)
+    //while (path.size() < m_Contex.m_Size)
+    for(uint32_t i = 1; i < m_Contex.m_Size; i++)
     {
         int index = ChoseRandomNeighbor();
         int nextIndex = m_NotVisited[index];
-        totalCost += m_Contex.m_Graph.GetDistance(m_CurrentIndex, nextIndex);
+         m_TotalCost += m_Contex.m_Graph.GetDistance(m_CurrentIndex, nextIndex);
 
         m_CurrentIndex = nextIndex;
-        path.push_back(m_CurrentIndex);
+        // path.push_back(m_CurrentIndex);
         PopIndex(index);
     }
-    totalCost += m_Contex.m_Graph.GetDistance(path.back(), path.front());
 
-    return std::make_pair(path, totalCost);
+    m_TotalCost += m_Contex.m_Graph.GetDistance(m_NotVisited.front(), m_NotVisited.back());
 }
 
 float Ant::CalculateWeight(int nextIndex) const
@@ -87,12 +88,21 @@ int Ant::ChoseRandomNeighbor() const
 void Ant::PopIndex(int index)
 {
     // std::cout<<m_NotVisited[index]<<" | ";
+    int tmp = m_NotVisited[index];
     m_NotVisited[index] = m_NotVisited[m_NotVisitedSize-1];
+    m_NotVisited[m_NotVisitedSize-1] = tmp;
     m_NotVisitedSize--;
 
     // for (size_t i = 0; i < m_NotVisitedSize; i++)
     // {
     //     std::cout<<" "<<m_NotVisited[i];
     // }
+
+    // std::cout<<" |";
+    // for (size_t i = m_NotVisitedSize; i < m_NotVisited.size(); i++)
+    // {
+    //     std::cout<<" "<<m_NotVisited[i];
+    // }
+    
     // std::cout<<std::endl;
 }

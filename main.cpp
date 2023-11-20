@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <algorithm>
 #include "Graph.h"
 #include "NearestNeighbor.h"
 #include "Benchmark.hpp"
@@ -10,7 +11,7 @@ int main()
 {
     std::cout<<"Hello\n";
 
-    Graph tsp(R"(Data\att48.tsp)");
+    Graph tsp(R"(Data\uy734.tsp)");
 
     NearestNeighbor nn(tsp);
     {
@@ -31,13 +32,13 @@ int main()
     AntColonySpec spec;
     spec.NumOfIteration = 100;
     spec.GroupSize = 200;
-    spec.pheromoneIntesity = 10000;
+    spec.pheromoneIntesity = 100000;
     AntColony aco(tsp, spec);
 
     float MaxValue = 0.f;
     float MinValue = std::numeric_limits<float>::infinity();
     float AvgValue = 0.f;
-    int tests = 10;
+    int tests = 2;
     for (size_t i = 0; i < tests; i++)
     {    
         {
@@ -47,7 +48,9 @@ int main()
 
         std::cout<<"ACO: ";
 
-        // for (auto &&i : aco.GetPath())
+        // auto path = aco.GetPath();
+        // std::reverse(path.begin(), path.end());
+        // for (auto &&i : path)
         // {
         //     std::cout<< i << ' ';
         // }
