@@ -7,6 +7,8 @@
 
 // #include "Benchmark.hpp"
 
+#include "Benchmark.hpp"
+
 Ant::Ant(const AntColony& colony)
     :m_Contex(colony), m_NotVisited(colony.m_Size, 0), m_NotVisitedSize(colony.m_Size)
 {
@@ -118,6 +120,8 @@ int Ant::FindNeighbour(const std::vector<item>& items, float value) const
 {
     int low = 0;
     int high = items.size()-1;
+    float randomWeight = Random::FRand(0,sumWieght);
+
 
     int mid;
     while (low < high)

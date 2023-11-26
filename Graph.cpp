@@ -70,6 +70,8 @@ Graph::Graph(const std::string& filePath)
             m_Distance[y*m_Size + x] = CalculateDistance(cities[x], cities[y]);
         }    
     }
+
+    bIsValid = true;
 }
 
 Graph::~Graph()

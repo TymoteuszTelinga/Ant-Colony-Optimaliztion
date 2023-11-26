@@ -6,6 +6,7 @@
 #include <thread>
 #include <functional>
 #include <math.h>
+#include <fstream>
 
 AntColony::AntColony(const Graph& graph, const AntColonySpec& spec)
     : m_Graph(graph), m_Size(graph.GetSize()), m_Spec(spec), m_PathCost(std::numeric_limits<float>::infinity())
@@ -163,4 +164,74 @@ void AntColony::Invalidate()
     std::fill(m_Pheromone, m_Pheromone+m_Size*m_Size, 1.0f);
 }
 
+#define STR_NAME(name) #name
 
+bool AntColonySpec::LoadFromFile(const std::string& filePath)
+{
+    std::ifstream file(filePath);
+    if (!file.is_open())
+    {
+        return false;
+    }
+    
+    std::string line;
+    while (std::getline(file, line))
+    {
+        std::string name;
+        float value;
+
+        int index = line.find('=');
+        name = line.substr(0, index);
+        value = std::stof(line.substr(index+1));
+
+        if(STR_NAME(evaporationRate) == name)
+        {
+            evaporationRate = value;
+            continue;
+        }
+
+        if (STR_NAME(pheromoneIntesity) == name)
+        {
+            pheromoneIntesity = value;
+            continue;
+        }
+        
+        if (STR_NAME(NumOfIteration) == name)
+        {
+            NumOfIteration = value;
+            continue;
+        }
+
+        if (STR_NAME(GroupSize) == name)
+        {
+            GroupSize = value;
+            continue;
+        }
+
+        if (STR_NAME(NumOfTest) == name)
+        {
+            NumOfTest = value;
+            continue;
+        }
+        
+    }
+
+    return true;
+}
+
+#define SaveVariable(variable) #variable<<'='<<variable<<'\n'
+
+void AntColonySpec::SaveToFile(const std::string& filePath)
+{
+    std::ofstream file(filePath);
+    if (!file.is_open())
+    {
+        return;
+    }
+    
+    file<<SaveVariable(evaporationRate);
+    file<<SaveVariable(pheromoneIntesity);
+    file<<SaveVariable(NumOfIteration);
+    file<<SaveVariable(GroupSize);
+    file<<SaveVariable(NumOfTest);
+}

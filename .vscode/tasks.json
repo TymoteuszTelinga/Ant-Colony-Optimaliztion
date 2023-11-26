@@ -12,10 +12,8 @@
 				"${workspaceFolder}\\main.exe",
 				"${workspaceFolder}\\*.cpp",
                 "${workspaceFolder}\\measure\\*.cpp",
-                "-I${workspaceFolder}\\measure",
-                // "-std=c++17",
-                // "-static-libstdc++",
-                // "-static-libgcc"
+                "-I${workspaceFolder}\\measure"
+                // "-std=c++17"
 			],
 			"options": {
 				"cwd": "${workspaceFolder}"

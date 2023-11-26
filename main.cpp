@@ -7,12 +7,21 @@
 #include "AntColony.h"
 #include "random.h"
 
-int main()
+int main(int argc, char *argv[])
 {
-    std::cout<<"Hello\n";
+    if (argc <= 1)
+    {
+        std::cerr<<"specify file\n";
+        return -1;
+    }
 
-    Graph tsp(R"(Data\uy734.tsp)");
-
+    std::string fileName(argv[1]);
+    Graph tsp(fileName);
+    if (!tsp.IsGood())
+    {
+        return -1;
+    }
+    
     NearestNeighbor nn(tsp);
     {
         MEASURE_NAME("NN")
@@ -28,19 +37,21 @@ int main()
     std::cout<<" "<<nn.GetPathCost()<<std::endl;
 
     //--------------------------------
-    // Slehmer32(time(NULL));
-    Slehmer32(420);
+    //Slehmer32(time(NULL));
+    Random::SRand(time(NULL));
     AntColonySpec spec;
-    spec.NumOfIteration = 300;
-    spec.GroupSize = 200;
-    spec.pheromoneIntesity = 100000;
+    if(!spec.LoadFromFile("spec.ini"))
+    {
+        spec.SaveToFile("spec.ini");
+    }
+
     AntColony aco(tsp, spec);
 
     float MaxValue = 0.f;
     float MinValue = std::numeric_limits<float>::infinity();
     float AvgValue = 0.f;
-    int tests = 3;
-    for (size_t i = 0; i < tests; i++)
+
+    for (size_t i = 0; i < spec.NumOfTest; i++)
     {    
         {
             MEASURE_NAME("ACO")
@@ -62,7 +73,7 @@ int main()
         MaxValue = std::max(MaxValue, aco.GetPathCost());
         MinValue = std::min(MinValue, aco.GetPathCost());
     }
-    AvgValue /= (float)tests;
+    AvgValue /= (float)spec.NumOfTest;
 
     std::cout<<"Max: "<<MaxValue<<" Min: "<<MinValue<<" Avg: "<<AvgValue<<std::endl;
 
