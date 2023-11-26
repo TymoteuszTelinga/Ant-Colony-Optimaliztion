@@ -37,7 +37,6 @@ int main(int argc, char *argv[])
     std::cout<<" "<<nn.GetPathCost()<<std::endl;
 
     //--------------------------------
-    //Slehmer32(time(NULL));
     Random::SRand(time(NULL));
     AntColonySpec spec;
     if(!spec.LoadFromFile("spec.ini"))

@@ -11,6 +11,9 @@ struct AntColonySpec
     uint32_t NumOfIteration = 100;
     uint32_t GroupSize = 200;
     uint32_t NumOfTest = 1;
+    //Ant
+    float distancePower = 4;
+    float pheromonePower = 1;
 
     bool LoadFromFile(const std::string& filePath);
     void SaveToFile(const std::string& filePath);

@@ -18,7 +18,7 @@ AntColony::AntColony(const Graph& graph, const AntColonySpec& spec)
     const float* orginalDistance = graph.GetDistanceRef();
     for (size_t i = 0; i < m_Size*m_Size; i++)
     {
-        m_DistancePower[i] = std::pow(1/orginalDistance[i], 4);
+        m_DistancePower[i] = std::pow(1/orginalDistance[i], m_Spec.distancePower);
     }
     
 }
@@ -35,22 +35,13 @@ void RunSubGroup(const AntColony* Colony, std::vector<int>& BestPath, float& Bes
 void AntColony::Run()
 {
     Invalidate();
-    // Ant ant(*this);
     for (size_t i = 0; i < m_Spec.NumOfIteration; i++)
     {
         //std::cout<<i<<'/'<<m_Spec.NumOfIteration<<'\r';
 
         std::vector<int> localBestPath;
         float localBestCost = std::numeric_limits<float>::infinity();
-        // for (size_t j = 0; j < m_Spec.GroupSize; j++)
-        // {
-        //     ant.Run();
-        //     if (ant.GetCost() < localBestCost)
-        //     {
-        //         localBestPath = ant.GetPath();
-        //         localBestCost = ant.GetCost();
-        //     }
-        // }
+  
         std::vector<std::thread> thrpool;
         for (size_t j = 0; j < 4; j++)
         {
@@ -66,11 +57,11 @@ void AntColony::Run()
         
         Evaporate();
 
-        if (m_LastImprovement >= 80)
-        {
-            std::cout<<"Early return it: "<<i<<"score :"<<m_PathCost<<std::endl;
-            return;
-        }
+        // if (m_LastImprovement >= 80)
+        // {
+        //     std::cout<<"Early return it: "<<i<<"score :"<<m_PathCost<<std::endl;
+        //     return;
+        // }
         
     }
     
@@ -213,7 +204,18 @@ bool AntColonySpec::LoadFromFile(const std::string& filePath)
             NumOfTest = value;
             continue;
         }
+
+        if (STR_NAME(distancePower) == name)
+        {
+            distancePower = value;
+            continue;
+        }
         
+        if (STR_NAME(pheromonePower) == name)
+        {
+            pheromonePower = value;
+            continue;
+        }
     }
 
     return true;
@@ -234,4 +236,6 @@ void AntColonySpec::SaveToFile(const std::string& filePath)
     file<<SaveVariable(NumOfIteration);
     file<<SaveVariable(GroupSize);
     file<<SaveVariable(NumOfTest);
+    file<<SaveVariable(distancePower);
+    file<<SaveVariable(pheromonePower);
 }

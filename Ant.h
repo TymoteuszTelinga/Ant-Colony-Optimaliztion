@@ -27,7 +27,6 @@ private:
     float m_TotalCost;
 
     int m_CurrentIndex;
-
-    const float m_DistancePower = 4;
+    
     const float m_PheromonePower = 3;
 };
