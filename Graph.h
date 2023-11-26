@@ -9,6 +9,7 @@ public:
     ~Graph();
 
     float GetDistance(uint32_t x, uint32_t y) const;
+    const float* GetDistanceRef() const { return m_Distance; };
     uint32_t GetSize() const { return m_Size; };
 
 private:

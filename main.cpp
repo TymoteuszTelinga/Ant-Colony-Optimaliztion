@@ -28,9 +28,10 @@ int main()
     std::cout<<" "<<nn.GetPathCost()<<std::endl;
 
     //--------------------------------
-    Slehmer32(time(NULL));
+    // Slehmer32(time(NULL));
+    Slehmer32(420);
     AntColonySpec spec;
-    spec.NumOfIteration = 100;
+    spec.NumOfIteration = 300;
     spec.GroupSize = 200;
     spec.pheromoneIntesity = 100000;
     AntColony aco(tsp, spec);
@@ -38,7 +39,7 @@ int main()
     float MaxValue = 0.f;
     float MinValue = std::numeric_limits<float>::infinity();
     float AvgValue = 0.f;
-    int tests = 2;
+    int tests = 3;
     for (size_t i = 0; i < tests; i++)
     {    
         {
