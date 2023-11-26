@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <algorithm>
 #include "Graph.h"
 #include "NearestNeighbor.h"
 #include "Benchmark.hpp"
@@ -49,6 +50,7 @@ int main(int argc, char *argv[])
     float MaxValue = 0.f;
     float MinValue = std::numeric_limits<float>::infinity();
     float AvgValue = 0.f;
+
     for (size_t i = 0; i < spec.NumOfTest; i++)
     {    
         {
@@ -57,10 +59,14 @@ int main(int argc, char *argv[])
         }
 
         std::cout<<"ACO: ";
-        // for (auto &&i : aco.GetPath())
+
+        // auto path = aco.GetPath();
+        // std::reverse(path.begin(), path.end());
+        // for (auto &&i : path)
         // {
-        //     std::cout<< i+1 << ' ';
+        //     std::cout<< i << ' ';
         // }
+
         std::cout<<" "<<aco.GetPathCost()<<std::endl;
 
         AvgValue += aco.GetPathCost();
